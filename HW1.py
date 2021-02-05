@@ -4,10 +4,10 @@ import math
 
 
 def generatePlot(windowSize, pitchValues):
-	fig = plt.figure()
+	fig = plt.figure(figsize=(20,10))
 	ax = fig.add_subplot(111)
 
-	ax.set(title='Accelerometer reading for Raw Pitch Angles and Moving Average of '+str(windowSize)+' Pitch Angles', ylabel='Pitch Angle (in degrees)', xlabel='Number of Readings')
+	ax.set(title='Accelerometer reading for Raw Pitch Angles compared with Moving Average of '+str(windowSize)+' Pitch Angles', ylabel='Pitch Angle values(in degrees)', xlabel='Index of Readings')
 
 	ax.plot(pitchValues.keys(), pitchValues.values(), linewidth=1)
 
@@ -17,9 +17,11 @@ def generatePlot(windowSize, pitchValues):
 	mean = np.mean(list(movingAverageValues.values()), dtype=np.float32)
 	std = np.std(list(movingAverageValues.values()), dtype=np.float32)
 	ax.text(280, 18, 'The mean of the Moving Average is '+str(mean))
-	ax.text(280, 17, 'The standard deviation of Moving Average is '+str(std))
+	ax.text(280, 17, 'The standard deviation of Moving Average is '+ str(std))
 
 	ax.legend(['Raw Data', 'Moving Average of '+str(windowSize)])
+
+	plt.savefig('PitchAnglesVsMovingAverage['+str(windowSize)+'].png')
 	plt.show()
 
 
@@ -54,6 +56,7 @@ with open(fileName) as file:
 		pitchValues[count] = int(separtateValues[4])
 		count = count+1
 
+generatePlot(1, pitchValues)
 
 generatePlot(2, pitchValues)
 
